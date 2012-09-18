@@ -1,4 +1,12 @@
-import math, sublime, sublime_plugin
+import os, shutil, math, sublime, sublime_plugin
+
+# Checking to see if we've copied the icons over on load
+if not os.path.exists(sublime.packages_path() + '/Theme - Default/1.png'):
+	for i in range(80):
+		src = sublime.packages_path() + '/VintageLines/icons/' + str(i) + '.png'
+		dest = sublime.packages_path() + '/Theme - Default/' + str(i) + '.png'
+
+		shutil.copy(src, dest)
 
 class VintageLinesCommand(sublime_plugin.TextCommand):
 	def run(self, args, show, move_forward=None):
