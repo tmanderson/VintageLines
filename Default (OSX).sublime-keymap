@@ -1,13 +1,3 @@
 [
-    { "keys": ["down"], "command": "line_down"},
-    { "keys": ["up"], "command": "line_up"},
-    { 
-        "keys": ["escape"], 
-        "command": "show_line_numbers",
-        "context": [{
-                "key": "setting.command_mode", 
-                "operator": "equal",
-                "operand": false
-            }]
-    }
+
 ]

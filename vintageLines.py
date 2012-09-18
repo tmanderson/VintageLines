@@ -1,62 +1,68 @@
-import math, sublime, sublime_plugin
+import math, threading, sublime, sublime_plugin
 
 class VintageLinesCommand(sublime_plugin.WindowCommand):
-	def run(self):
+	def run(self, modified = False):
 		window = self.window
-		# Get the status of the current view, to see what
-		# mode we are in
+
+		# Quick fix, view.clear_on_change was killing sublime, had to resort
+		# to set_timeout
+		if not hasattr(window, 't') and not modified:
+			window.t = sublime.set_timeout(self.checkSettings, 200)
 
 		group = window.active_group()
-		view = window.active_view_in_group(group)
+		self.view = window.active_view_in_group(group)
+		
+		self.lastVal = self.view.settings().get('command_mode')
 
-		lines = view.lines(view.visible_region())
+		if modified:
+			self.checkCommand()
 
-		# icon = 'data:image/png;base64,' + open('/Users/mitchellanderson/Library/Application Support/Sublime Text 2/Packages/VintageLines/icons/circle.png').read().encode("base64").replace("\n", "")
+	def checkSettings(self):
+		if self.view.settings().get('command_mode') != self.lastVal:
+			self.checkCommand()
 
-		self.renderRelativeLineNumbers(view)
+		self.window.t = sublime.set_timeout(self.checkSettings, 200)
 
-	def renderRelativeLineNumbers(self, view):
-		cur_line = view.line(view.sel()[0].begin()).begin()
-		lines = view.lines(view.visible_region())
+	def checkCommand(self):
+		in_command = self.view.settings().get('command_mode')
+		
+		if in_command:
+			self.renderRelativeLineNumbers()
+		else:
+			self.removeRelatveLneNumbers()
+			self.bols = []
 
-		for l in lines:
-			icon = (cur_line - 1) - l.begin()
-			view.add_regions('linenums' + str(icon), [l], str(math.fabs(icon)))
+		self.lastVal = in_command
+
+	def renderRelativeLineNumbers(self):
+		self.rendered = True
+
+		view = self.view
+
+		cur_line = view.rowcol(view.sel()[0].begin())[0] - view.rowcol(view.visible_region().begin())[0]
+
+		lines = self.view.lines(view.visible_region())
+
+		for i in range(len(lines)):
+			name = 'linenum' + str(i)
+			icon = str(int(math.fabs(cur_line - i)))
+			
+			view.add_regions(name, [lines[i]], 'linenums', icon, sublime.HIDDEN)
+
+	def removeRelatveLneNumbers(self):
+
+		regs = self.view.find_all('^\d+\t\t')
+
+		for i in range(100):
+			if self.view.get_regions('linenum' + str(i)):
+				self.view.erase_regions('linenum' + str(i))
 
 	def moveCursor(direction):
 		self.view.window().run_command('move', {"by": "lines", "forward": True})
 
-class ShowLineNumbers(sublime_plugin.TextCommand):
-	def run(self, args):
-		self.view.settings().set('line_numbers', True)
-		self.view.erase_regions('line_numbers');
-		self.view.run_command('exit_insert_mode')
+class modeListener(sublime_plugin.EventListener):
+	def on_activated(self, view):
+		view.window().run_command('vintage_lines')
 
-class LineDown(sublime_plugin.TextCommand):
-	def run(self, args):
-		
-		mode = self.view.get_status('mode')
-
-		# Don't override the down arrow!
-		self.view.window().run_command('move', {"by": "lines", "forward": True})
-		# sublime.run_command('vintage_lines_command', 'moveCursor')
-
-		if mode == 'INSERT MODE':
-			self.view.settings().set('line_numbers', False);
-			# Once we've moved down, get the current position
-			focus_line = self.view.sel()
-			self.view.add_regions('line_numbers', [focus_line[0]], 'first', '1', sublime.HIDDEN)
-
-class LineUp(sublime_plugin.TextCommand):
-	def run(self, args):
-
-		mode = self.view.get_status('mode')
-		
-		# Don't override the up arrow!
-		self.view.window().run_command('move', {"by": "lines", "forward": False})
-		# sublime.run_command('vintage_lines_command', 'moveCursor')
-
-		if mode == 'INSERT MODE':
-			# Once we've moved down, get the current position
-			focus_line = self.view.sel()
-			self.view.add_regions('line_numbers', [focus_line[0]], 'first', '1', sublime.HIDDEN)
+	def on_modified(self, view):
+		view.window().run_command('vintage_lines', {"modified": True})
