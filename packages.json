@@ -1,0 +1,20 @@
+{
+	"schema_version": "0.1",
+	"packages": [
+		{
+			"name": "VintageLines",
+			"description": "Get relative line numbers in vintage mode",
+			"author": "tmanderson",
+			"homepage": "https://github.com/tmanderson/VintageLines",
+			"last_modified": "2012-09-18 15:21:30",
+			"platforms": {
+				"*": [
+					{
+						"version": "0.1",
+						"url": "https://github.com/tmanderson/VintageLines/v0.1/master"
+					}
+				]
+			}
+		}
+	]
+}

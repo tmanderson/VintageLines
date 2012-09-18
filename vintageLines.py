@@ -1,44 +1,22 @@
-import math, threading, sublime, sublime_plugin
+import math, sublime, sublime_plugin
 
-class VintageLinesCommand(sublime_plugin.WindowCommand):
-	def run(self, modified = False):
-		window = self.window
-
-		# Quick fix, view.clear_on_change was killing sublime, had to resort
-		# to set_timeout
-		if not hasattr(window, 't') and not modified:
-			window.t = sublime.set_timeout(self.checkSettings, 200)
-
-		group = window.active_group()
-		self.view = window.active_view_in_group(group)
+class VintageLinesCommand(sublime_plugin.TextCommand):
+	def run(self, args, show, move_forward=None):
 		
-		self.lastVal = self.view.settings().get('command_mode')
+		if move_forward == True:
+			self.view.run_command('move', {"by":"lines","forward":True})
+		elif move_forward == False:
+			self.view.run_command('move', {"by":"lines","forward":False})
 
-		if modified:
-			self.removeRelatveLneNumbers()
-			self.checkCommand()
-
-	def checkSettings(self):
-		if self.view.settings().get('command_mode') != self.lastVal:
-			self.checkCommand()
-
-		self.window.t = sublime.set_timeout(self.checkSettings, 200)
-
-	def checkCommand(self):
-		in_command = self.view.settings().get('command_mode')
-		
-		if in_command:
-			self.renderRelativeLineNumbers()
+		if show == True:
+			self.showRelativeNumbers()
 		else:
-			self.removeRelatveLneNumbers()
-			self.bols = []
+			self.hideRelativeNumbers()
 
-		self.lastVal = in_command
-
-	def renderRelativeLineNumbers(self):
-		self.rendered = True
-
+	def showRelativeNumbers(self):
 		view = self.view
+
+		view.settings().set('line_numbers', False)
 
 		cur_line = view.rowcol(view.sel()[0].begin())[0] - view.rowcol(view.visible_region().begin())[0]
 
@@ -50,20 +28,47 @@ class VintageLinesCommand(sublime_plugin.WindowCommand):
 			
 			view.add_regions(name, [lines[i]], 'linenums', icon, sublime.HIDDEN)
 
-	def removeRelatveLneNumbers(self):
-
-		regs = self.view.find_all('^\d+\t\t')
+	def hideRelativeNumbers(self):
+		self.view.settings().set('line_numbers', True)
 
 		for i in range(100):
 			if self.view.get_regions('linenum' + str(i)):
 				self.view.erase_regions('linenum' + str(i))
 
-	def moveCursor(direction):
-		self.view.window().run_command('move', {"by": "lines", "forward": True})
+class SettingsListener(sublime_plugin.WindowCommand):
+	def run(self):
+		view = self.window.active_view_in_group(self.window.active_group())
+		
+		if view.settings().get('command_mode') == None:
+			view.settings().set('command_mode', False)
+
+		self.mode = view.settings().get('command_mode')
+
+		self.checkSettings()
+
+	def checkSettings(self):
+		view 		= self.window.active_view_in_group(self.window.active_group())
+		settings 	= view.settings();
+
+		if settings.get('command_mode') != self.mode:
+			
+			self.mode = settings.get('command_mode')
+
+			if settings.get('command_mode'):
+				view.run_command('vintage_lines', {"show":True})
+			else:
+				view.run_command('vintage_lines', {"show":False})
+
+		sublime.set_timeout(self.checkSettings, 200)
 
 class modeListener(sublime_plugin.EventListener):
 	def on_activated(self, view):
-		view.window().run_command('vintage_lines')
+		view.window().run_command('settings_listener')
 
-	def on_modified(self, view):
-		view.window().run_command('vintage_lines', {"modified": True})
+	def on_selection_modified(self, view):
+		show = False
+
+		if view.settings().get('command_mode'):
+			show = True
+
+		view.run_command('vintage_lines', {"show": show})

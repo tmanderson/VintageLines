@@ -1,0 +1,18 @@
+[
+    { 
+        "keys": ["down"], 
+        "command": "vintage_lines", 
+        "args": {"show": true, "move_forward": true},
+        "context": [{
+            "key": "setting.command_mode"
+        }]
+    },
+    { 
+        "keys": ["up"], 
+        "command": "vintage_lines", 
+        "args": {"show": true, "move_forward": false},
+        "context": [{
+            "key": "setting.command_mode"
+        }]
+    }
+]
