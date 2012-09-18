@@ -15,6 +15,7 @@ class VintageLinesCommand(sublime_plugin.WindowCommand):
 		self.lastVal = self.view.settings().get('command_mode')
 
 		if modified:
+			self.removeRelatveLneNumbers()
 			self.checkCommand()
 
 	def checkSettings(self):
