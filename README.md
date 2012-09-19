@@ -1,5 +1,5 @@
 ## VintageLines
-### Jankily Making relative line numbers in Vintage mode
+### Jankily making relative line numbers in Vintage mode
 
 #### Relative lines in command mode
 ![Relative lines in command mode](https://raw.github.com/tmanderson/VintageLines/master/screenshots/screenshot1.png)
