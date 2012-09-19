@@ -1,5 +1,5 @@
 ## VintageLines v0.1
-### Jankily making relative line numbers in Vintage mode
+### Jankily making relative line numbers in [Vintage mode](http://www.sublimetext.com/docs/2/vintage.html)
 
 #### Relative lines in command mode
 ![Relative lines in command mode](https://raw.github.com/tmanderson/VintageLines/master/screenshots/screenshot1.png)
