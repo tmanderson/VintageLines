@@ -9,16 +9,26 @@ if not os.path.exists(sublime.packages_path() + '/Theme - Default/1.png'):
 		shutil.copy(src, dest)
 
 class VintageLinesCommand(sublime_plugin.TextCommand):
-	def run(self, args, show, move_forward=None):
+	def run(self, args, show, move_forward=None, extend=False):
 		
-		if move_forward == True:
-			self.view.run_command('move', {"by":"lines","forward":True})
-		elif move_forward == False:
-			self.view.run_command('move', {"by":"lines","forward":False})
+		# If we're in visual mode we want to continue a selection
+		# when pressing the up and down keys	
+		if self.view.get_status('mode') == 'VISUAL MODE':
+			extend = True
 
-		if show == True:
+		# move_forward is used for cheesy "up" and "down" keybindings
+		if move_forward == True:
+			self.view.run_command('move', {"by":"lines","forward":True,"extend":extend})
+		elif move_forward == False:
+			self.view.run_command('move', {"by":"lines","forward":False,"extend":extend})
+
+		mode = self.view.settings().get('command_mode')
+		normal_nums = self.view.settings().get('line_numbers')
+		
+		# If in command_mode AND non-relative numbers a showing OR "up" or "down" is pressed	
+		if mode == True and normal_nums == True or show == True:
 			self.showRelativeNumbers()
-		else:
+		elif mode == False and normal_nums == False:
 			self.hideRelativeNumbers()
 
 	def showRelativeNumbers(self):
@@ -39,6 +49,8 @@ class VintageLinesCommand(sublime_plugin.TextCommand):
 	def hideRelativeNumbers(self):
 		self.view.settings().set('line_numbers', True)
 
+		# Should probably use the visible region here, for an accurate
+		# number of visible lines, instead of this lame overestimate
 		for i in range(100):
 			if self.view.get_regions('linenum' + str(i)):
 				self.view.erase_regions('linenum' + str(i))
@@ -71,9 +83,18 @@ class SettingsListener(sublime_plugin.WindowCommand):
 
 class modeListener(sublime_plugin.EventListener):
 	def on_activated(self, view):
-		view.window().run_command('settings_listener')
+		if view:
+			view.window().run_command('settings_listener')
 
 	def on_selection_modified(self, view):
+		sel = view.sel()[0]
+
+		# We don't want to over-do our accuracy...
+		# This prevents updating of the relative number
+		# regions when a user is (probably) using visual
+		if sel.end() - sel.begin() > 2:
+			return True;
+
 		show = False
 
 		if view.settings().get('command_mode'):
