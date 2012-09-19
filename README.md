@@ -10,7 +10,6 @@
 ### NOTES
 - It's version 0.1
 - This is definitely a hacky way to do this, but it works
-- Haven't tested on light themes, whoops
 - Range currently only goes to 80
 
 Bottom line: You get relative line numbers, and it works.
