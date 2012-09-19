@@ -1,7 +1,16 @@
 ## VintageLines
-### A snazzy package that gives you relative line numbers for Sublime Text 2's Vintage mode.
+### Jankily Making relative line numbers in Vintage mode
 
-### Important
-VintageLines is still in early development, and isn't quite ready for package control. If you're going to use now, be sure to copy all of the icons into the ```Theme - Default``` sublime package root. Oh, and if you have more than 60 lines viewable on screen at a time, numbers over 60 won't show up yet.
+#### Relative lines in command mode
+![Relative lines in command mode](screenshots/screenshot1.png)
 
-VintageLines gives you relative line numbers while in command mode! How snazzy!
+#### Normal lines in insert mode
+![Normal line numbers in insert mode](screenshots/screenshot2.png)
+
+### NOTES
+- It's version 0.1
+- This is definitely a hacky way to do this, but it works
+- Haven't tested on light themes, whoops
+- Range currently only goes to 80
+
+Bottom line: You get relative line numbers, and it works.
