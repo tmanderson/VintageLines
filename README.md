@@ -1,4 +1,4 @@
-## VintageLines
+## VintageLines v0.1
 ### Jankily making relative line numbers in Vintage mode
 
 #### Relative lines in command mode
