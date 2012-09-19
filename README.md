@@ -2,10 +2,10 @@
 ### Jankily Making relative line numbers in Vintage mode
 
 #### Relative lines in command mode
-![Relative lines in command mode](screenshots/screenshot1.png)
+![Relative lines in command mode](https://raw.github.com/tmanderson/VintageLines/master/screenshots/screenshot1.png)
 
 #### Normal lines in insert mode
-![Normal line numbers in insert mode](screenshots/screenshot2.png)
+![Normal line numbers in insert mode](https://raw.github.com/tmanderson/VintageLines/master/screenshots/screenshot2.png)
 
 ### NOTES
 - It's version 0.1
