@@ -27,6 +27,7 @@ class VintageLinesCommand(sublime_plugin.TextCommand):
 		
 		# If in command_mode AND non-relative numbers a showing OR "up" or "down" is pressed	
 		if mode == True and normal_nums == True or show == True:
+			self.hideRelativeNumbers()
 			self.showRelativeNumbers()
 		elif mode == False and normal_nums == False:
 			self.hideRelativeNumbers()
