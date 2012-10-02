@@ -27,6 +27,7 @@ class VintageLinesCommand(sublime_plugin.TextCommand):
 		
 		# If in command_mode AND non-relative numbers a showing OR "up" or "down" is pressed	
 		if mode == True and normal_nums == True or show == True:
+			self.hideRelativeNumbers()
 			self.showRelativeNumbers()
 		elif mode == False and normal_nums == False:
 			self.hideRelativeNumbers()
@@ -49,9 +50,8 @@ class VintageLinesCommand(sublime_plugin.TextCommand):
 	def hideRelativeNumbers(self):
 		self.view.settings().set('line_numbers', True)
 
-		# Should probably use the visible region here, for an accurate
-		# number of visible lines, instead of this lame overestimate
-		for i in range(100):
+		# Remove all relative line number regions within viewport
+		for i in range(len(self.view.visible_region())):
 			if self.view.get_regions('linenum' + str(i)):
 				self.view.erase_regions('linenum' + str(i))
 

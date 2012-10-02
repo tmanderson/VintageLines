@@ -1,5 +1,5 @@
 ## VintageLines v0.1
-### Jankily making relative line numbers in Vintage mode
+### Jankily making relative line numbers in [Vintage mode](http://www.sublimetext.com/docs/2/vintage.html)
 
 #### Relative lines in command mode
 ![Relative lines in command mode](https://raw.github.com/tmanderson/VintageLines/master/screenshots/screenshot1.png)
@@ -10,7 +10,6 @@
 ### NOTES
 - It's version 0.1
 - This is definitely a hacky way to do this, but it works
-- Haven't tested on light themes, whoops
 - Range currently only goes to 80
 
 Bottom line: You get relative line numbers, and it works.
