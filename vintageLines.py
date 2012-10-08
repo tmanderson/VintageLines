@@ -9,28 +9,13 @@ if not os.path.exists(sublime.packages_path() + '/Theme - Default/1.png'):
 		shutil.copy(src, dest)
 
 class VintageLinesCommand(sublime_plugin.TextCommand):
-	def run(self, args, show, move_forward=None, extend=False):
+	def run(self, args, show):
 		
-		# If we're in visual mode we want to continue a selection
-		# when pressing the up and down keys	
-		if self.view.get_status('mode') == 'VISUAL MODE':
-			extend = True
-
-		# move_forward is used for cheesy "up" and "down" keybindings
-		if move_forward == True:
-			self.view.run_command('move', {"by":"lines","forward":True,"extend":extend})
-		elif move_forward == False:
-			self.view.run_command('move', {"by":"lines","forward":False,"extend":extend})
-
-		mode = self.view.settings().get('command_mode')
-		normal_nums = self.view.settings().get('line_numbers')
-		
-		# If in command_mode AND non-relative numbers a showing OR "up" or "down" is pressed	
-		if mode == True and normal_nums == True or show == True:
-			self.hideRelativeNumbers()
+		if show == True:
+			self.removeRelativeNumbers()
 			self.showRelativeNumbers()
-		elif mode == False and normal_nums == False:
-			self.hideRelativeNumbers()
+		else:
+			self.removeRelativeNumbers()
 
 	def showRelativeNumbers(self):
 		view = self.view
@@ -41,13 +26,14 @@ class VintageLinesCommand(sublime_plugin.TextCommand):
 
 		lines = self.view.lines(view.visible_region())
 
-		for i in range(len(lines)):
+		# TODO: See high numbers look...
+		for i in max(80, range(len(lines))):
 			name = 'linenum' + str(i)
 			icon = str(int(math.fabs(cur_line - i)))
 			
 			view.add_regions(name, [lines[i]], 'linenums', icon, sublime.HIDDEN)
 
-	def hideRelativeNumbers(self):
+	def removeRelativeNumbers(self):
 		self.view.settings().set('line_numbers', True)
 
 		# Remove all relative line number regions within viewport
@@ -55,49 +41,27 @@ class VintageLinesCommand(sublime_plugin.TextCommand):
 			if self.view.get_regions('linenum' + str(i)):
 				self.view.erase_regions('linenum' + str(i))
 
-class SettingsListener(sublime_plugin.WindowCommand):
+class VintageLinesListener(sublime_plugin.ApplicationCommand):
 	def run(self):
-		view = self.window.active_view_in_group(self.window.active_group())
-		
-		if view.settings().get('command_mode') == None:
-			view.settings().set('command_mode', False)
-
-		self.mode = view.settings().get('command_mode')
-
 		self.checkSettings()
 
 	def checkSettings(self):
-		view 		= self.window.active_view_in_group(self.window.active_group())
-		settings 	= view.settings();
+		window = sublime.active_window()
 
-		if settings.get('command_mode') != self.mode:
-			
-			self.mode = settings.get('command_mode')
+		if window:
+			view = window.active_view_in_group(window.active_group())
 
-			if settings.get('command_mode'):
-				view.run_command('vintage_lines', {"show":True})
-			else:
-				view.run_command('vintage_lines', {"show":False})
+			if view:
+				settings 	= view.settings()
 
-		sublime.set_timeout(self.checkSettings, 200)
+				if settings.get('command_mode'):
+					view.run_command('vintage_lines', {"show":True})
+				else:
+					view.run_command('vintage_lines', {"show":False})
 
-class modeListener(sublime_plugin.EventListener):
-	def on_activated(self, view):
-		if view:
-			view.window().run_command('settings_listener')
+		sublime.set_timeout(self.checkSettings, 100)
 
-	def on_selection_modified(self, view):
-		sel = view.sel()[0]
+def run_vintage_lines():
+	sublime.run_command('vintage_lines_listener')
 
-		# We don't want to over-do our accuracy...
-		# This prevents updating of the relative number
-		# regions when a user is (probably) using visual
-		if sel.end() - sel.begin() > 2:
-			return True;
-
-		show = False
-
-		if view.settings().get('command_mode'):
-			show = True
-
-		view.run_command('vintage_lines', {"show": show})
+sublime.set_timeout(run_vintage_lines, 500)
