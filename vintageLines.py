@@ -71,5 +71,5 @@ class VintageLinesEventListener(sublime_plugin.EventListener):
 
 	def on_selection_modified(self, view):
 		self.view = view
-		self.checkSettings()
+		sublime.set_timeout(self.checkSettings, 10)
 
