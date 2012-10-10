@@ -23,7 +23,7 @@ class VintageLinesCommand(sublime_plugin.TextCommand):
 			name = 'linenum' + str(i)
 			icon = str(int(math.fabs(cur_line - i)))
 
-			view.add_regions(name, [lines[i]], 'linenums', "../VintageLines/icons/%s" % icon, sublime.HIDDEN)
+			view.add_regions(name, [lines[i]], 'linenums', "../VintageLines/icons/%s/%s" % (sublime.platform(), icon), sublime.HIDDEN)
 
 	def removeRelativeNumbers(self):
 		self.view.settings().set('line_numbers', True)
