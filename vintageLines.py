@@ -17,9 +17,9 @@ class VintageLinesCommand(sublime_plugin.TextCommand):
 		cur_line = view.rowcol(view.sel()[0].begin())[0] - view.rowcol(view.visible_region().begin())[0]
 
 		lines = self.view.lines(view.visible_region())
+		icon_count = 99
 
-		# TODO: See high numbers look...
-		for i in max(80, range(len(lines))):
+		for i in range(max(cur_line-icon_count, 0), min(cur_line+icon_count+1, len(lines))):
 			name = 'linenum' + str(i)
 			icon = str(int(math.fabs(cur_line - i)))
 
