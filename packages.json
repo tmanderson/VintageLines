@@ -6,12 +6,12 @@
 			"description": "Get relative line numbers in vintage mode",
 			"author": "tmanderson",
 			"homepage": "https://github.com/tmanderson/VintageLines",
-			"last_modified": "2012-10-08 1:00:00",
+			"last_modified": "2012-10-10 13:10:13",
 			"platforms": {
 				"*": [
 					{
-						"version": "0.2",
-						"url": "https://nodeload.github.com/tmanderson/VintageLines/zipball/v0.2"
+						"version": "0.3",
+						"url": "https://nodeload.github.com/tmanderson/VintageLines/zipball/v0.3"
 					}
 				]
 			}
