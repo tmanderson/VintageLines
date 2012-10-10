@@ -25,7 +25,7 @@ void create_pngs(int surfacewidth, int surfaceheight, float fontsize, const char
         cairo_paint (cr);
 
         cairo_set_source_rgb(cr, 0.75, 0.75, 0.75);
-        cairo_move_to(cr, 15-(15-2*fontwidth)-strlen(buf)*fontwidth, fontsize);
+        cairo_move_to(cr, surfacewidth-(surfacewidth-2*fontwidth)-strlen(buf)*fontwidth, fontsize);
         cairo_show_text(cr, buf);
         char file[32] = "icons/";
         strcat(file, buf);
