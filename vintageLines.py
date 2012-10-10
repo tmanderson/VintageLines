@@ -1,16 +1,8 @@
 import os, shutil, math, sublime, sublime_plugin
 
-# Checking to see if we've copied the icons over on load
-if not os.path.exists(sublime.packages_path() + '/Theme - Default/1.png'):
-	for i in range(80):
-		src = sublime.packages_path() + '/VintageLines/icons/' + str(i) + '.png'
-		dest = sublime.packages_path() + '/Theme - Default/' + str(i) + '.png'
-
-		shutil.copy(src, dest)
-
 class VintageLinesCommand(sublime_plugin.TextCommand):
 	def run(self, args, show):
-		
+
 		if show == True:
 			self.removeRelativeNumbers()
 			self.showRelativeNumbers()
@@ -30,8 +22,8 @@ class VintageLinesCommand(sublime_plugin.TextCommand):
 		for i in max(80, range(len(lines))):
 			name = 'linenum' + str(i)
 			icon = str(int(math.fabs(cur_line - i)))
-			
-			view.add_regions(name, [lines[i]], 'linenums', icon, sublime.HIDDEN)
+
+			view.add_regions(name, [lines[i]], 'linenums', "../VintageLines/icons/%s" % icon, sublime.HIDDEN)
 
 	def removeRelativeNumbers(self):
 		self.view.settings().set('line_numbers', True)
