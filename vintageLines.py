@@ -4,6 +4,7 @@ class VintageLinesEventListener(sublime_plugin.EventListener):
 	def __init__(self):
 		self.in_check_settings = False
 		self.icon_count = 99
+		self.on_load = self.on_new = self.on_activated
 
 	def showRelativeNumbers(self):
 		view = self.view
@@ -17,19 +18,15 @@ class VintageLinesEventListener(sublime_plugin.EventListener):
 		lines = self.view.lines(sublime.Region(self.view.text_point(start_line, 0), self.view.text_point(end_line, 0)))
 
 		for i in range(start_line, end_line):
-			name = 'linenum' + str(i)
+			name = 'linenum' + str(i-start_line)
 			icon = str(int(math.fabs(cur_line - i)))
 
 			view.add_regions(name, [lines[i-start_line]], 'linenums', "../VintageLines/icons/%s/%s" % (sublime.platform(), icon), sublime.HIDDEN)
 
 	def removeRelativeNumbers(self):
 		self.view.settings().set('line_numbers', True)
-
-		cur_line = self.view.settings().get('vintage_lines.line', 0)
-		max_lines = self.view.rowcol(self.view.size())[0]
-
 		# Remove all relative line number regions within viewport
-		for i in range(max(cur_line-self.icon_count, 0), min(cur_line+self.icon_count+1, max_lines)):
+		for i in range(2*self.icon_count+1):
 			if self.view.get_regions('linenum' + str(i)):
 				self.view.erase_regions('linenum' + str(i))
 
@@ -39,6 +36,7 @@ class VintageLinesEventListener(sublime_plugin.EventListener):
 			# changes settings, we don't want it to end up in an infinite loop.
 			return
 		self.in_check_settings = True
+
 		if self.view:
 			settings = self.view.settings()
 
@@ -69,12 +67,9 @@ class VintageLinesEventListener(sublime_plugin.EventListener):
 			view.settings().clear_on_change("VintageLines")
 			view.settings().set('vintage_lines.line', -1) # Just to force an update on activation
 			view.settings().add_on_change("VintageLines", self.checkSettings)
-
 		self.checkSettings()
 
 	def on_selection_modified(self, view):
 		self.view = view
 		self.checkSettings()
-
-
 
