@@ -40,7 +40,10 @@ class VintageLinesEventListener(sublime_plugin.EventListener):
 		if self.view:
 			settings = self.view.settings()
 
-			show = settings.get('command_mode')
+			if settings.has("vintage_lines.force_mode"):
+				show = settings.get("vintage_lines.force_mode")
+			else:
+				show = settings.get('command_mode')
 			mode = settings.get('vintage_lines.mode', False)
 			line = settings.get('vintage_lines.line', -1)
 			lines = settings.get('vintage_lines.lines', -1)
