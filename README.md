@@ -1,4 +1,4 @@
-## VintageLines v0.3
+## VintageLines v0.4
 ### Jankily making relative line numbers in [Vintage mode](http://www.sublimetext.com/docs/2/vintage.html)
 
 VintageLines is available via [Sublime Package Control](http://wbond.net/sublime_packages/package_control).
