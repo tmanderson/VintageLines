@@ -1,4 +1,4 @@
-import os, shutil, math, sublime, sublime_plugin
+import os, shutil, math, sublime, sublime_plugin, types
 
 class VintageLinesEventListener(sublime_plugin.EventListener):
 	def __init__(self):
@@ -48,10 +48,10 @@ class VintageLinesEventListener(sublime_plugin.EventListener):
 
 			if settings.has("vintage_lines.force_mode"):
 				show = settings.get("vintage_lines.force_mode")
-            elif settings.get('command_mode'):
+			elif type(settings.get('command_mode')) is types.BooleanType:
 				show = settings.get('command_mode')
-            else:
-                show = False
+			else:
+				show = False
 
 			mode = settings.get('vintage_lines.mode', False)
 			line = settings.get('vintage_lines.line', -1)
