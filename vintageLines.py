@@ -32,7 +32,7 @@ class VintageLinesEventListener(sublime_plugin.EventListener):
 
 	def checkSettings(self):
 		cur_line = self.view.rowcol(self.view.sel()[0].begin())[0]
-		
+
 		if cur_line == None:
 			settings.set("vintage_lines.force_mode", True);
 
@@ -48,8 +48,10 @@ class VintageLinesEventListener(sublime_plugin.EventListener):
 
 			if settings.has("vintage_lines.force_mode"):
 				show = settings.get("vintage_lines.force_mode")
-			else:
+            elif settings.get('command_mode'):
 				show = settings.get('command_mode')
+            else:
+                show = False
 
 			mode = settings.get('vintage_lines.mode', False)
 			line = settings.get('vintage_lines.line', -1)
