@@ -48,7 +48,7 @@ class VintageLinesEventListener(sublime_plugin.EventListener):
 
 			if settings.has("vintage_lines.force_mode"):
 				show = settings.get("vintage_lines.force_mode")
-			elif type(settings.get('command_mode')) is types.BooleanType:
+			elif type(settings.get('command_mode')) is bool:
 				show = settings.get('command_mode')
 			else:
 				show = False
