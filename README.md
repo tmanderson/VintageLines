@@ -1,7 +1,8 @@
-## VintageLines v0.3
+## VintageLines v0.5
 ### Jankily making relative line numbers in [Vintage mode](http://www.sublimetext.com/docs/2/vintage.html)
 
-VintageLines is available via [Sublime Package Control](http://wbond.net/sublime_packages/package_control).
+VintageLines is available via [Sublime Package Control](http://wbond.net/sublime_packages/package_control). **Now compatible with ST3!**
+
 
 #### Relative lines in command mode
 ![Relative lines in command mode](https://raw.github.com/tmanderson/VintageLines/master/screenshots/screenshot1.png)
@@ -23,3 +24,4 @@ for the toggle to be effective in both command mode and insert mode.
 ### CONTRIBUTORS (THANKS A LOT!):
 - [@kuroir](https://github.com/kuroir)
 - [@quarnster](https://github.com/quarnster)
+- [@i-akhmadullin](https://github.com/i-akhmadullin)

@@ -1,4 +1,4 @@
-import os, shutil, math, sublime, sublime_plugin
+import os, shutil, math, sublime, sublime_plugin, types
 
 class VintageLinesEventListener(sublime_plugin.EventListener):
 	def __init__(self):
@@ -31,10 +31,16 @@ class VintageLinesEventListener(sublime_plugin.EventListener):
 				self.view.erase_regions('linenum' + str(i))
 
 	def checkSettings(self):
+		cur_line = self.view.rowcol(self.view.sel()[0].begin())[0]
+
+		if cur_line == None:
+			settings.set("vintage_lines.force_mode", True);
+
 		if self.in_check_settings:
 			# As this function is called when a setting changes, and its children also
 			# changes settings, we don't want it to end up in an infinite loop.
 			return
+
 		self.in_check_settings = True
 
 		if self.view:
@@ -42,8 +48,11 @@ class VintageLinesEventListener(sublime_plugin.EventListener):
 
 			if settings.has("vintage_lines.force_mode"):
 				show = settings.get("vintage_lines.force_mode")
-			else:
+			elif type(settings.get('command_mode')) is bool:
 				show = settings.get('command_mode')
+			else:
+				show = False
+
 			mode = settings.get('vintage_lines.mode', False)
 			line = settings.get('vintage_lines.line', -1)
 			lines = settings.get('vintage_lines.lines', -1)
