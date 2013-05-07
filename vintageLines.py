@@ -6,6 +6,12 @@ class VintageLinesEventListener(sublime_plugin.EventListener):
 		self.icon_count = 99
 		self.on_load = self.on_new = self.on_activated
 
+		# Set icon path depending on version
+		if int(sublime.version()) >= 3000:
+			self.icon_path = "Packages/VintageLines/icons/%s/%s.png"
+		else:
+			self.icon_path = "../VintageLines/icons/%s/%s"
+
 	def showRelativeNumbers(self):
 		view = self.view
 
@@ -21,7 +27,7 @@ class VintageLinesEventListener(sublime_plugin.EventListener):
 			name = 'linenum' + str(i-start_line)
 			icon = str(int(math.fabs(cur_line - i)))
 
-			view.add_regions(name, [lines[i-start_line]], 'linenums', "../VintageLines/icons/%s/%s" % (sublime.platform(), icon), sublime.HIDDEN)
+			view.add_regions(name, [lines[i-start_line]], 'linenums', self.icon_path % (sublime.platform(), icon), sublime.HIDDEN)
 
 	def removeRelativeNumbers(self):
 		self.view.settings().set('line_numbers', True)
