@@ -19,11 +19,16 @@ class VintageLinesEventListener(sublime_plugin.EventListener):
 
 		cur_line = view.rowcol(view.sel()[0].begin())[0]
 		start_line = max(cur_line-self.icon_count, 0)
-		end_line = min(cur_line+self.icon_count+1, self.view.rowcol(self.view.size())[0])
+		end_line = min(cur_line+self.icon_count, self.view.rowcol(self.view.size())[0])
 
-		lines = self.view.lines(sublime.Region(self.view.text_point(start_line, 0), self.view.text_point(end_line, 0)))
+		lines = self.view.lines(sublime.Region(self.view.text_point(start_line, 0), self.view.text_point(end_line + 1, 0)))
 
-		for i in range(start_line, end_line):
+		# Append the last line's region manually (if necessary)
+		if (len(lines) < end_line - start_line + 1):
+			last_text_point = lines[-1].end() + 1
+			lines.append(sublime.Region(last_text_point, last_text_point))
+
+		for i in range(start_line, start_line + len(lines)):
 			name = 'linenum' + str(i-start_line)
 			icon = str(int(math.fabs(cur_line - i)))
 
