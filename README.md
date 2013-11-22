@@ -1,7 +1,7 @@
 ## VintageLines v0.5
 ### Jankily making relative line numbers in [Vintage mode](http://www.sublimetext.com/docs/2/vintage.html)
 
-VintageLines is available via [Sublime Package Control](http://wbond.net/sublime_packages/package_control). **Now compatible with ST3!**
+VintageLines is available via [Sublime Package Control](https://sublime.wbond.net). **Now compatible with ST3!**
 
 
 #### Relative lines in command mode
@@ -12,13 +12,13 @@ VintageLines is available via [Sublime Package Control](http://wbond.net/sublime
 
 ### Notes
 
-If you prefer to always have relative line numbers on set the setting "vintage_lines.force_mode": true.
+If you prefer to always have relative line numbers on set the setting `"vintage_lines.force_mode": true`.
 
 If you prefer a key binding toggle relative lines on and off you can set one up by using key binding code like the following:
 
         {"keys": ["ctrl+t"], "command": "toggle_setting", "args": {"setting": "vintage_lines.force_mode"}}
 
-Note that you should also set vintage_lines.force_mode in your User Preferences to your preferred default
+Note that you should also set `vintage_lines.force_mode` in your User Preferences to your preferred default
 for the toggle to be effective in both command mode and insert mode.
 
 ### CONTRIBUTORS (THANKS A LOT!):
