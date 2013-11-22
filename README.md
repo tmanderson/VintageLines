@@ -27,4 +27,3 @@ for the toggle to be effective in both command mode and insert mode.
 - [@i-akhmadullin](https://github.com/i-akhmadullin)
 - [@dsmatter](https://github.com/dsmatter)
 - [@MattDMo](https://github.com/MattDMo)
-- 
