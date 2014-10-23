@@ -1,3 +1,5 @@
+# CURRENTLY NOT BEING MAINTAINED – IF YOU WOULD LIKE TO TAKE COMMAND, LET ME KNOW!
+
 ## VintageLines v0.5
 ### Jankily making relative line numbers in [Vintage mode](http://www.sublimetext.com/docs/2/vintage.html)
 
