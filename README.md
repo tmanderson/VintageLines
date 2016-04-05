@@ -1,4 +1,4 @@
-## The [VintageLines](https://github.com/co-dh/VintageLines) package is now under control of [co-dh](https://github.com/co-dh/VintageLines).
+## The [VintageLines](https://github.com/co-dh/VintageLines) package is now being maintained by [co-dh](https://github.com/co-dh).
 
 
 ### CONTRIBUTORS (THANKS A LOT!):
